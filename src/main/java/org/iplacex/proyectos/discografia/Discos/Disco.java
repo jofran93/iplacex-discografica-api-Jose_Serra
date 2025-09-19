@@ -1,52 +1,55 @@
 package org.iplacex.proyectos.discografia.Discos;
 
-import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import java.util.List;
 
 @Document("discos")
 public class Disco {
     @Id
-    public String _id;            
+    private String _id;
+    private String idArtista;
+    private String nombre;
+    private int anioLanzamiento;
+    private List<String> canciones;
 
-    public String idArtista;
-    public String nombre;
-    public int anioLanzamiento;
-    public List<String> canciones;
+    public String getId() {
+        return _id;
+    }
+
+    public void setId(String _id) {
+        this._id = _id;
+    }
+
     public String getIdArtista() {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'getIdArtista'");
+        return idArtista;
     }
-    public Object getNombre() {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'getNombre'");
+
+    public void setIdArtista(String idArtista) {
+        this.idArtista = idArtista;
     }
-    public void setNombre(Object nombre2) {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'setNombre'");
+
+    public String getNombre() {
+        return nombre;
     }
-    public Object getAnioLanzamiento() {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'getAnioLanzamiento'");
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
-    public void setAnioLanzamiento(Object anioLanzamiento2) {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'setAnioLanzamiento'");
+
+    public int getAnioLanzamiento() {
+        return anioLanzamiento;
     }
-    public Object getCanciones() {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'getCanciones'");
+
+    public void setAnioLanzamiento(int anioLanzamiento) {
+        this.anioLanzamiento = anioLanzamiento;
     }
-    public void setCanciones(Object canciones2) {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'setCanciones'");
+
+    public List<String> getCanciones() {
+        return canciones;
     }
-    public void setIdArtista(String idArtista2) {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'setIdArtista'");
-    }
-    public void setId(Object object) {
-        
-        throw new UnsupportedOperationException("Unimplemented method 'setId'");
+
+    public void setCanciones(List<String> canciones) {
+        this.canciones = canciones;
     }
 }
