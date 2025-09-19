@@ -26,20 +26,20 @@ public class DiscoController {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> HandlePostDiscoRequest(@RequestBody Disco disco) {
-        if (disco.idArtista == null || disco.idArtista.isBlank()) {
+        if (disco.getIdArtista() == null || disco.getIdArtista().isBlank()) {
             return ResponseEntity.badRequest().body("idArtista es requerido.");
         }
 
         boolean existeArtista =
-                artistaRepo.existsById(disco.idArtista) ||
-                artistaRepo.findOneByMongoId(disco.idArtista).isPresent();
+                artistaRepo.existsById(disco.getIdArtista()) ||
+                artistaRepo.findOneByMongoId(disco.getIdArtista()).isPresent();
 
         if (!existeArtista) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("El idArtista no existe en la colección 'artistas'.");
         }
 
-        disco._id = null;
+        disco.setId(null);
         Disco temp = discoRepo.insert(disco);
         return new ResponseEntity<>(temp, HttpStatus.CREATED);
     }
@@ -91,8 +91,8 @@ public class DiscoController {
         }
 
         boolean existeArtista =
-                artistaRepo.existsById(disco.idArtista) ||
-                artistaRepo.findOneByMongoId(disco.idArtista).isPresent();
+                artistaRepo.existsById(disco.getIdArtista()) ||
+                artistaRepo.findOneByMongoId(disco.getIdArtista()).isPresent();
 
         if (!existeArtista) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -118,4 +118,3 @@ public class DiscoController {
         return new ResponseEntity<>("Disco eliminado correctamente.", HttpStatus.OK);
     }
 }
-
