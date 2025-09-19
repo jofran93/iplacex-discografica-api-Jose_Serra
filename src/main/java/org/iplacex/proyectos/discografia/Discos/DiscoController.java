@@ -20,7 +20,6 @@ public class DiscoController {
     @Autowired
     private IArtistaRepository artistaRepo;
 
-
     @PostMapping(
         value = "/disco",
         consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -78,4 +77,45 @@ public class DiscoController {
         List<Disco> discos = discoRepo.findDiscosByIdArtista(idArtista);
         return new ResponseEntity<>(discos, HttpStatus.OK);
     }
+
+    @PutMapping(
+        value = "/disco/{id}",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<?> HandlePutDiscoRequest(@PathVariable("id") String id, @RequestBody Disco disco) {
+        Optional<Disco> optionalDisco = discoRepo.findById(id);
+
+        if (optionalDisco.isEmpty()) {
+            return new ResponseEntity<>("Disco no encontrado.", HttpStatus.NOT_FOUND);
+        }
+
+        boolean existeArtista =
+                artistaRepo.existsById(disco.idArtista) ||
+                artistaRepo.findOneByMongoId(disco.idArtista).isPresent();
+
+        if (!existeArtista) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("El idArtista no existe en la colección 'artistas'.");
+        }
+
+        Disco existingDisco = optionalDisco.get();
+        existingDisco.setNombre(disco.getNombre());
+        existingDisco.setAnioLanzamiento(disco.getAnioLanzamiento());
+        existingDisco.setCanciones(disco.getCanciones());
+        existingDisco.setIdArtista(disco.getIdArtista());
+
+        Disco actualizado = discoRepo.save(existingDisco);
+        return new ResponseEntity<>(actualizado, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/disco/{id}")
+    public ResponseEntity<?> HandleDeleteDiscoRequest(@PathVariable("id") String id) {
+        if (!discoRepo.existsById(id)) {
+            return new ResponseEntity<>("Disco no encontrado.", HttpStatus.NOT_FOUND);
+        }
+        discoRepo.deleteById(id);
+        return new ResponseEntity<>("Disco eliminado correctamente.", HttpStatus.OK);
+    }
 }
+
